@@ -1,14 +1,20 @@
 const puppeteer = require('puppeteer');
 
 async function iniciarChrome() {
-  // Abre el navegador Chrome en el servidor
-  const browser = await puppeteer.launch({ args: ['--no-sandbox'] });
+  console.log("Iniciando Google Chrome en la nube...");
+  const browser = await puppeteer.launch({ 
+    args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+  });
   const page = await browser.newPage();
   
-  // Entra a la página que necesitas y se queda ahí para siempre
-  await page.goto('https://ssytbot.netlify.app/', { waitUntil: 'networkidle2', timeout: 0 });
+  // REMPLAZA ESTA URL POR LA TUYA
+  await page.goto('https://ssytbot.netlify.app/', { waitUntil: 'networkidle2' });
   
-  console.log("Chrome está abierto y funcionando en la nube 24/7");
+  console.log("Página cargada con éxito. Esperando 30 segundos en la nube...");
+  await new Promise(resolve => setTimeout(resolve, 30000)); 
+  
+  await browser.close();
+  console.log("Tarea completada. Chrome cerrado hasta la próxima ejecución.");
 }
 
 iniciarChrome();
