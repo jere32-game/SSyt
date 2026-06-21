@@ -6,7 +6,7 @@ async function iniciarChrome() {
   const page = await browser.newPage();
   
   // Entra a la página que necesitas y se queda ahí para siempre
-  await page.goto('https://LA-PAGINA-QUE-TU-QUIERAS.com', { waitUntil: 'networkidle2', timeout: 0 });
+  await page.goto('https://ssytbot.netlify.app/', { waitUntil: 'networkidle2', timeout: 0 });
   
   console.log("Chrome está abierto y funcionando en la nube 24/7");
 }
