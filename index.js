@@ -25,8 +25,8 @@ app.listen(port, async () => {
         
         const page = await browser.newPage();
         
-        console.log("Abriendo la página de Netlify...");
-        await page.goto('https://ssytbot.netlify.app/');
+        console.log("Abriendo el bot 32gpt...");
+        await page.goto('https://jere32-game.github.io/32-GPT/');
         console.log("¡Página abierta con éxito! Tu bot ahora está conectado a Discord.");
         
         // No ponemos "browser.close()" para que la pestaña se quede abierta infinitamente.
