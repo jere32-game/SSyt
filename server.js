@@ -1,20 +1,37 @@
 const puppeteer = require('puppeteer');
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
 
-async function iniciarChrome() {
-  console.log("Iniciando Google Chrome en la nube...");
-  const browser = await puppeteer.launch({ 
-    args: ['--no-sandbox', '--disable-setuid-sandbox'] 
-  });
-  const page = await browser.newPage();
-  
-  // REMPLAZA ESTA URL POR LA TUYA
-  await page.goto('https://ssytbot.netlify.app/', { waitUntil: 'networkidle2' });
-  
-  console.log("Página cargada con éxito. Esperando 30 segundos en la nube...");
-  await new Promise(resolve => setTimeout(resolve, 30000)); 
-  
-  await browser.close();
-  console.log("Tarea completada. Chrome cerrado hasta la próxima ejecución.");
-}
+// Esta es una página de "estado" para saber que el servidor está vivo
+app.get('/', (req, res) => {
+    res.send('El navegador invisible está funcionando y tu bot está abierto.');
+});
 
-iniciarChrome();
+app.listen(port, async () => {
+    console.log(`Servidor de monitoreo escuchando en el puerto ${port}`);
+
+    try {
+        console.log("Iniciando el navegador invisible...");
+        // Configuraciones especiales para que funcione en servidores en la nube
+        const browser = await puppeteer.launch({
+            headless: "new",
+            args: [
+                '--no-sandbox', 
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage'
+            ] 
+        });
+        
+        const page = await browser.newPage();
+        
+        console.log("Abriendo la página de Netlify...");
+        await page.goto('https://ssytbot.netlify.app/');
+        console.log("¡Página abierta con éxito! Tu bot ahora está conectado a Discord.");
+        
+        // No ponemos "browser.close()" para que la pestaña se quede abierta infinitamente.
+        
+    } catch (error) {
+        console.error("Hubo un error al abrir el navegador:", error);
+    }
+});
